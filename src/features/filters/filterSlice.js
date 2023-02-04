@@ -1,18 +1,29 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 let initialState = {
-    
-    stock: false,
-    brand : [],
-    keyword : ""
-}
+  stock: false,
+  brand: [],
+  keyword: "",
+};
 
 const filterSlice = createSlice({
-    name : "cart",
-    initialState,
-    reducers :{
+  name: "cart",
+  initialState,
+  reducers: {
+    toggle: (state) => {
+      state.stock = !state.stock;
+    },
 
-    }
+    toggleBrands: (state, action) => {
+      if (!state.brand.includes(action.payload)) {
+        state.brand.push(action.payload);
+      } else {
+        state.brand = state.brand.filter((brand) => brand !== action.payload);
+      }
+    },
+  },
 });
 
-export default filterSlice.reducer
+export const { toggle, toggleBrands } = filterSlice.actions;
+
+export default filterSlice.reducer;
