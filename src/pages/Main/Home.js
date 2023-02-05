@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../../components/ProductCard";
 import { toggle, toggleBrands } from "../../features/filters/filterSlice";
 import { getProducts } from "../../features/products/productsSlice";
 
 const Home = () => {
-  // const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.filter);
   const {products} = useSelector((state) => state.products);
   const { stock, brand } = filter;
-  // console.log(product);
 
   useEffect(() => {
-    // fetch("http://localhost:5000/products")
-    //   .then((res) => res.json())
-    //   .then((data) => setProducts(data.data));
     dispatch(getProducts())
-  }, []);
+  }, [dispatch]);
 
   let content;
 
