@@ -2,12 +2,14 @@ import {configureStore } from "@reduxjs/toolkit"
 import cartSlice from "../features/cart/cartSlice";
 import filterSlice from "../features/filters/filterSlice";
 import logger from "redux-logger"
+import productsSlice from "../features/products/productsSlice";
 
 
 const store = configureStore({
     reducer :{
         cart : cartSlice,
-        filter : filterSlice
+        filter : filterSlice,
+        products : productsSlice,
     },
     middleware : getDefaultMiddleware => getDefaultMiddleware().concat(logger)
 });
