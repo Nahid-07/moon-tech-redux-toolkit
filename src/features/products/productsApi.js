@@ -1,9 +1,11 @@
 import axios from "../../utils/axios.config";
 
-const fetchProducts = async () => {
+export const fetchProducts = async () => {
     const data = await axios.get("/products");
 
     return data.data.data
 }
 
-export default fetchProducts
+export const postProduct = async (productData)=>{
+    await axios.post("/product",productData)
+}
