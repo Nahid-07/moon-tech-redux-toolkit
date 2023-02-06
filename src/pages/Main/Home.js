@@ -7,21 +7,23 @@ import { getProducts } from "../../features/products/productsSlice";
 const Home = () => {
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.filter);
-  const {products} = useSelector((state) => state.products);
+  const {products, isLoading} = useSelector((state) => state.products);
   const { stock, brand } = filter;
 
   useEffect(() => {
     dispatch(getProducts())
   }, [dispatch]);
 
+  
   let content;
-
   if (products.length) {
     content = products.map((product) => (
       <ProductCard key={product.model} product={product} />
     ));
   }
-
+  if(isLoading){
+    return <p>Loading......</p>
+  }
   if (products.length && (stock || brand.length)) {
     content = products
       .filter((product) => {
