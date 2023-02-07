@@ -26,6 +26,11 @@ export const addProducts = createAsyncThunk(
 const productsSlice = createSlice({
   name: "products",
   initialState,
+  reducers : {
+    togglePostSuccess : (state)=>{
+      state.postSuccess = false;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getProducts.pending, (state, action) => {
@@ -63,4 +68,5 @@ const productsSlice = createSlice({
   },
 });
 
+export const {togglePostSuccess} = productsSlice.actions
 export default productsSlice.reducer;
