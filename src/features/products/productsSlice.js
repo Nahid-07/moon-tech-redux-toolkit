@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import  {fetchProducts, postProduct } from "./productsApi";
+import { deleteProduct, fetchProducts, postProduct } from "./productsApi";
 
 const initialState = {
   products: [],
   isLoading: false,
   postSuccess: false,
+  deleteSuccess: false,
   isError: false,
   error: "",
 };
@@ -23,13 +24,23 @@ export const addProducts = createAsyncThunk(
     return products;
   }
 );
+export const removeProducts = createAsyncThunk(
+  "products/removeProducts",
+  async (id) => {
+    const deletedProduct = deleteProduct(id);
+    return deletedProduct;
+  }
+);
 const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers : {
-    togglePostSuccess : (state)=>{
+  reducers: {
+    togglePostSuccess: (state) => {
       state.postSuccess = false;
-    }
+    },
+    toggledeleteSuccess: (state) => {
+      state.deleteSuccess = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -50,7 +61,7 @@ const productsSlice = createSlice({
       })
       .addCase(addProducts.pending, (state) => {
         state.isLoading = true;
-        state.isError = false;
+        state.postSuccess = false;
         state.isError = false;
       })
       .addCase(addProducts.fulfilled, (state) => {
@@ -58,15 +69,32 @@ const productsSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
       })
-      .addCase(addProducts.rejected, (state,action) => {
+      .addCase(addProducts.rejected, (state, action) => {
         state.products = [];
         state.isLoading = false;
         state.postSuccess = false;
+        state.isError = true;
+        state.error = action.error.message;
+      })
+      .addCase(removeProducts.pending, (state) => {
+        state.isLoading = true;
+        state.deleteSuccess = false;
+        state.isError = false;
+      })
+      .addCase(removeProducts.fulfilled, (state) => {
+        state.deleteSuccess = true;
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(removeProducts.rejected, (state, action) => {
+        state.products = [];
+        state.isLoading = false;
+        state.deleteSuccess = false;
         state.isError = true;
         state.error = action.error.message;
       });
   },
 });
 
-export const {togglePostSuccess} = productsSlice.actions
+export const { togglePostSuccess } = productsSlice.actions;
 export default productsSlice.reducer;
